@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-$9ah+4^wme#%@f!yudcf8-t$1*b8vvri11=y5x7+)d^qmkhsyr
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '').split(',')
 
 # AUTHENTICATION
 AUTH_USER_MODEL = 'pet_shop.Usuario'
