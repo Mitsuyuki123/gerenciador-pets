@@ -75,7 +75,7 @@ class LoginForm(forms.Form):
             try:
                 usuario = authenticate(username=email, password=password)
                 if usuario is None:
-                    raise forms.ValidationError('Senha incorreta.')
+                    raise forms.ValidationError('Senha incorreta ou conta inativa. Verifique seu email para ativar a conta.')
             except Usuario.DoesNotExist:
                 raise forms.ValidationError('Email não encontrado.')
 
