@@ -82,7 +82,28 @@ def enviar_email_tutor(request, animal_id):
     send_mail(mail_subject, '', from_email, recipient_list, fail_silently=False, html_message=message)
     usuario.is_notificado = True
     usuario.save()
-    messages.success(request, f'{usuario.nome} foi notificado com sucesso')
+    messages.success(request, f'{usuario.nome} foi notificado para buscar o pet com sucesso')
+    return redirect('listar_pets')
+
+
+def enviar_email_trazer_pet(request, animal_id):
+    pet = Animal.objects.get(id=animal_id)
+    usuario = Usuario.objects.get(id=pet.usuario_id)
+    current_site = get_current_site(request)
+    mail_subject = 'Estamos esperando seu Pet!'
+    from_email = 'no-reply@petshopmanager.com'
+    recipient_list = [usuario.email]
+    message = render_to_string('pets/email_trazer_pet.html', {
+        'pet': pet,
+        'usuario': usuario,
+        'domain': current_site.domain,
+        'uid': urlsafe_base64_encode(force_bytes(usuario.id)),
+        'token': default_token_generator.make_token(usuario),
+    })
+    send_mail(mail_subject, '', from_email, recipient_list, fail_silently=False, html_message=message)
+    usuario.is_notificado = True
+    usuario.save()
+    messages.success(request, f'{usuario.nome} foi notificado para trazer o pet com sucesso')
     return redirect('listar_pets')
 
 
@@ -157,9 +178,12 @@ def excluir_usuario(request, usuario_id):
 def pet_status_recebido(request, animal_id):
     try:
         pet = get_object_or_404(Animal, id=animal_id)
+        usuario = pet.usuario
         if not pet.status:
             pet.status = True
             pet.save()
+            usuario.is_notificado = False
+            usuario.save()
             messages.success(request, f'Pet \'{pet.nome}\' foi recebido!')
             return redirect('listar_pets')
         else:

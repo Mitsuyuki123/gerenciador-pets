@@ -16,6 +16,7 @@ urlpatterns = [
     path('usuario/atualizar_dados', views.atualizar_dados, name='atualizar_dados'),
     path('admin/usuarios/listar/', views.listar_usuarios, name='listar_usuarios'),
     path('admin/usuarios/notificar/<int:animal_id>/', views.enviar_email_tutor, name='notificar_usuario'),
+    path('admin/usuarios/trazer/<int:animal_id>/', views.enviar_email_trazer_pet, name='enviar_email_trazer_pet'),
     path('admin/usuarios/desativar/<int:usuario_id>/', views.desativar_usuario, name='desativar_usuario'),
     path('admin/usuarios/reativar/<int:usuario_id>/', views.reativar_usuario, name='reativar_usuario'),
     path('admin/usuarios/excluir/<int:usuario_id>/', views.excluir_usuario, name='excluir_usuario'),
