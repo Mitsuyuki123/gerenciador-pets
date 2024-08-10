@@ -87,6 +87,9 @@ def enviar_email_tutor(request, animal_id):
 
 
 def enviar_email_trazer_pet(request, animal_id):
+    print(request)
+    mensagem = request.POST.get('mensagem')
+    print(f'mensagem = {mensagem}')
     pet = Animal.objects.get(id=animal_id)
     usuario = Usuario.objects.get(id=pet.usuario_id)
     current_site = get_current_site(request)
@@ -99,6 +102,7 @@ def enviar_email_trazer_pet(request, animal_id):
         'domain': current_site.domain,
         'uid': urlsafe_base64_encode(force_bytes(usuario.id)),
         'token': default_token_generator.make_token(usuario),
+        'mensagem': mensagem,
     })
     send_mail(mail_subject, '', from_email, recipient_list, fail_silently=False, html_message=message)
     usuario.is_notificado = True

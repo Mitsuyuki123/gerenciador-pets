@@ -50,18 +50,44 @@ Listar Pets{% endblock %}
 				{% endif %}
 			</a>
 			{% else %}
-			<a href="{% url 'enviar_email_trazer_pet' pet.id %}" class="btn {% if not pet.usuario.is_notificado %} btn-primary
-				{% else %} btn-secondary {% endif %}  ms-auto">
-				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-				     class="bi bi-envelope" viewBox="0 0 16 16">
-					<path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z"/>
-				</svg>
-				{% if not pet.usuario.is_notificado %}
-				Notificar o dono p/ trazer
-				{% else %}
-				Reenviar notificação
-				{% endif %}
-			</a>
+			<!-- Button trigger modal -->
+			<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+				Launch demo modal
+			</button>
+			<!-- Modal -->
+			<form action="{% url 'enviar_email_trazer_pet' pet.id %}" method="post">
+				{% csrf_token %}
+				<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+				     aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+								<button type="button" class="btn-close" data-bs-dismiss="modal"
+								        aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<input type="text" name="mensagem" placeholder="Digite a mensagem para o tutor"
+								       class="form-control mb-2">
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+								<button type="submit" class="btn btn-primary ms-auto">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+									     class="bi bi-envelope" viewBox="0 0 16 16">
+										<path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z"/>
+									</svg>
+									{% if not pet.usuario.is_notificado %}
+									Notificar o dono p/ trazer
+									{% else %}
+									Reenviar notificação
+									{% endif %}
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
 			{% endif %}
 		</div>
 	</li>
